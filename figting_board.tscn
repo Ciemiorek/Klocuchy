@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://dys8e35hurieg"]
+
+[ext_resource type="Script" path="res://figting_board.cs" id="1_bhr7g"]
+[ext_resource type="Texture2D" uid="uid://bx4fnl0iksnow" path="res://matirials/groundBlack.2png.png" id="1_qty3k"]
+[ext_resource type="Texture2D" uid="uid://de4ugc24hth4m" path="res://matirials/Fire.png" id="3_inypt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gf2gt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_52doa"]
+albedo_texture = ExtResource("1_qty3k")
+normal_scale = -7.99
+uv1_scale = Vector3(3, 2, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uisgo"]
+size = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3cakv"]
+transparency = 1
+albedo_texture = ExtResource("3_inypt")
+
+[node name="battleField" type="Node3D"]
+script = ExtResource("1_bhr7g")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_gf2gt")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_52doa")
+
+[node name="fireMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0895201, 0.995985, 9.28249e-10, -0.036236, -0.00325693, -0.999338, -0.995326, -0.0894608, 0.0363821, 0.512929, 0.787078, 0)
+mesh = SubResource("PlaneMesh_uisgo")
+surface_material_override/0 = SubResource("StandardMaterial3D_3cakv")

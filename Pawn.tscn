@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=3 uid="uid://crf8hv8wnivpx"]
+
+[ext_resource type="Script" path="res://Pawn.cs" id="1_yjk14"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3m0xs"]
+
+[sub_resource type="Skin" id="Skin_pt25l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_848ro"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ce0ul"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bm54c"]
+size = Vector3(1, 1.6, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_14khb"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_dj751"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_burtv"]
+top_radius = 0.7
+bottom_radius = 0.7
+height = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7n25q"]
+transparency = 1
+albedo_color = Color(0.392157, 1, 0.301961, 0.294118)
+
+[node name="Pawn" type="Node3D"]
+script = ExtResource("1_yjk14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_3m0xs")
+skin = SubResource("Skin_pt25l")
+surface_material_override/0 = SubResource("StandardMaterial3D_848ro")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+physics_material_override = SubResource("PhysicsMaterial_ce0ul")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+visible = false
+shape = SubResource("BoxShape3D_bm54c")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.912875, 0)
+rotation_order = 0
+billboard = 1
+texture = SubResource("ViewportTexture_14khb")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+transparent_bg = true
+scaling_3d_scale = 1.27
+vrs_mode = 1
+canvas_item_default_texture_filter = 3
+canvas_item_default_texture_repeat = 2
+size = Vector2i(100, 30)
+
+[node name="Label" type="Label" parent="Sprite3D/SubViewport"]
+offset_right = 92.0
+offset_bottom = 26.0
+text = "placeholder
+"
+label_settings = SubResource("LabelSettings_dj751")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.886608, 0.462523, 0, -0.462523, 0.886608, 0, 1.93648, 3.34151)
+visible = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
+
+[node name="lightUp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.241917, 0)
+visible = false
+mesh = SubResource("CylinderMesh_burtv")
+surface_material_override/0 = SubResource("StandardMaterial3D_7n25q")
+
+[connection signal="input_event" from="MeshInstance3D/StaticBody3D" to="." method="inputEvent"]
+[connection signal="mouse_entered" from="MeshInstance3D/StaticBody3D" to="." method="mouseOn"]
+[connection signal="mouse_exited" from="MeshInstance3D/StaticBody3D" to="." method="mouseOFF"]

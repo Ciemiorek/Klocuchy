@@ -1,0 +1,205 @@
+[gd_scene load_steps=7 format=3 uid="uid://dbn833d7l1848"]
+
+[ext_resource type="Script" path="res://interfaceScript.cs" id="1_rtqsw"]
+[ext_resource type="Script" path="res://PawnsInfoVBoxContainer.cs" id="2_em6uo"]
+[ext_resource type="PackedScene" path="res://PawnInfoInterface.tscn" id="2_fp5ka"]
+[ext_resource type="Script" path="res://TimePanelContainer.cs" id="4_0dmye"]
+[ext_resource type="Script" path="res://buttonsAttacks.cs" id="4_fg6fx"]
+[ext_resource type="Texture2D" uid="uid://b3j628jjheqkf" path="res://Kleps.png" id="5_8h51y"]
+
+[node name="Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rtqsw")
+
+[node name="PawnsInfoVBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.75
+theme_override_constants/separation = 6
+script = ExtResource("2_em6uo")
+
+[node name="Pawn01" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="Pawn02" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="Pawn03" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="PawnsInfoVBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "                      VS"
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+
+[node name="Pawn04" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="Pawn05" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="Pawn06" parent="PawnsInfoVBoxContainer" instance=ExtResource("2_fp5ka")]
+layout_mode = 2
+
+[node name="TextPanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.8
+anchor_right = 0.99
+anchor_bottom = 0.99
+
+[node name="Text" type="RichTextLabel" parent="TextPanelContainer"]
+layout_mode = 2
+text = "kefkslfjksdfklsdfjklsdf"
+
+[node name="TimePanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.05
+anchor_bottom = 0.6
+script = ExtResource("4_0dmye")
+
+[node name="ProgressBar" type="ProgressBar" parent="TimePanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+value = 50.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="TimePanelContainer"]
+
+[node name="TextureRect" type="TextureRect" parent="TimePanelContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 5.79
+auto_translate = false
+localize_numeral_system = false
+texture = ExtResource("5_8h51y")
+expand_mode = 1
+
+[node name="buttonsAIM" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.8
+anchor_right = 0.3
+anchor_bottom = 0.99
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+script = ExtResource("4_fg6fx")
+
+[node name="GridContainer" type="GridContainer" parent="buttonsAIM"]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="Button1" type="Button" parent="buttonsAIM/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Attack"
+
+[node name="Button2" type="Button" parent="buttonsAIM/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Move"
+
+[node name="Button3" type="Button" parent="buttonsAIM/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Wait"
+
+[node name="Button4" type="Button" parent="buttonsAIM/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Back"
+
+[node name="buttonsAttacks" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.8
+anchor_right = 0.3
+anchor_bottom = 0.99
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+script = ExtResource("4_fg6fx")
+
+[node name="GridContainer" type="GridContainer" parent="buttonsAttacks"]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="Button1" type="Button" parent="buttonsAttacks/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "ATACK 1"
+
+[node name="Button2" type="Button" parent="buttonsAttacks/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "atack 2"
+
+[node name="Button3" type="Button" parent="buttonsAttacks/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "atack 2"
+
+[node name="Button4" type="Button" parent="buttonsAttacks/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "atack 2"
+
+[connection signal="timeout" from="TimePanelContainer/Timer" to="." method="timeHasStopedEmitSignal"]
+[connection signal="timeout" from="TimePanelContainer/Timer" to="TimePanelContainer" method="timeHasStoped"]
+[connection signal="buttonAttackPushed" from="buttonsAIM" to="." method="buttonHasBeenPushedEmitSignal"]
+[connection signal="button_up" from="buttonsAIM/GridContainer/Button1" to="buttonsAIM" method="buttonAttack1"]
+[connection signal="button_up" from="buttonsAIM/GridContainer/Button2" to="buttonsAIM" method="buttonAttack2"]
+[connection signal="button_up" from="buttonsAIM/GridContainer/Button3" to="buttonsAIM" method="buttonAttack3"]
+[connection signal="button_up" from="buttonsAIM/GridContainer/Button4" to="buttonsAIM" method="buttonAttack4"]
+[connection signal="buttonAttackMouseEnter" from="buttonsAttacks" to="." method="showAttackText"]
+[connection signal="buttonAttackPushed" from="buttonsAttacks" to="." method="buttonAttacksHasBeenPushedEmitSignal"]
+[connection signal="button_up" from="buttonsAttacks/GridContainer/Button1" to="buttonsAttacks" method="buttonAttack1"]
+[connection signal="mouse_entered" from="buttonsAttacks/GridContainer/Button1" to="buttonsAttacks" method="buttonAttack1MouseEnter"]
+[connection signal="mouse_exited" from="buttonsAttacks/GridContainer/Button1" to="buttonsAttacks" method="buttonAttack1MouseExit"]
+[connection signal="button_up" from="buttonsAttacks/GridContainer/Button2" to="buttonsAttacks" method="buttonAttack2"]
+[connection signal="mouse_entered" from="buttonsAttacks/GridContainer/Button2" to="buttonsAttacks" method="buttonAttack2MouseEnter"]
+[connection signal="mouse_exited" from="buttonsAttacks/GridContainer/Button2" to="buttonsAttacks" method="buttonAttack2MouseExit"]
+[connection signal="button_up" from="buttonsAttacks/GridContainer/Button3" to="buttonsAttacks" method="buttonAttack3"]
+[connection signal="mouse_entered" from="buttonsAttacks/GridContainer/Button3" to="buttonsAttacks" method="buttonAttack3MouseEnter"]
+[connection signal="mouse_exited" from="buttonsAttacks/GridContainer/Button3" to="buttonsAttacks" method="buttonAttack3MouseExit"]
+[connection signal="button_up" from="buttonsAttacks/GridContainer/Button4" to="buttonsAttacks" method="buttonAttack4"]
+[connection signal="mouse_entered" from="buttonsAttacks/GridContainer/Button4" to="buttonsAttacks" method="buttonAttack4MouseEnter"]
+[connection signal="mouse_exited" from="buttonsAttacks/GridContainer/Button4" to="buttonsAttacks" method="buttonAttack4MouseExit"]

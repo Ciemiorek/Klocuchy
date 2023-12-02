@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5nymlo13v0ie"]
+
+[ext_resource type="Script" path="res://PawnInfoInterface.cs" id="1_ncvlb"]
+
+[node name="PawnInfoInterface" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -879.0
+offset_bottom = -563.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_ncvlb")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Name"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HelthProgressBar" type="ProgressBar" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="hpOnMaxHp" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[center]50/100
+"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
