@@ -14,10 +14,15 @@ script = ExtResource("1_tsxy7")
 [node name="Interface" parent="." instance=ExtResource("3_1ktsp")]
 mouse_filter = 1
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D1" type="Camera3D" parent="."]
 transform = Transform3D(-4.37114e-08, -0.866025, 0.5, 0, 0.5, 0.866025, -1, 3.78552e-08, -2.18557e-08, 6.025, 9, -2)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D1"]
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(0.642788, -0.586824, 0.492404, 0, 0.642788, 0.766044, -0.766044, -0.492404, 0.413176, 8.773, 9, 4.97994)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D2"]
 
 [node name="battleField" type="Node3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 2)

@@ -27,10 +27,19 @@ public partial class buttonsAttacks : MarginContainer
 	public void setAttackOnButton(Attack[] attacks)
     {
 		this.attacks = attacks;
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < attacks.Length; i++)
         {
-			buttons[i].Text = this.attacks[i].attackName;
-        }
+			if (attacks[i] != null)
+			{
+				buttons[i].Text = this.attacks[i].attackName;
+				buttons[i].Visible = true;
+            }
+            else
+            {
+				buttons[i].Visible = false;
+            }
+		}
+        
 
 	}
 

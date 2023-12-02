@@ -5,7 +5,9 @@ using System.Collections.Generic;
 
 public partial class FightField : Node3D
 {
-
+    //Camera
+    Camera3D Camera3D1;
+    Camera3D Camera3D2;
 
     double deltaPassed = 0;
     double delta;
@@ -13,12 +15,14 @@ public partial class FightField : Node3D
     //Logic of game
 
 
-    private bool doPlayerChoosToMove = true;
-    private bool doPlayerChoosToAttac = true;
+    private bool doPlayerChoosToMove = false;
+    private bool doPlayerChoosToAttac = false;
+    private bool doPlayerChoosWitchAttack = false;
     private bool isPlayerTurn = true;
     private bool isTimeToSelectPawn = true;
     //-1 none of them active, 0-6 active one of them
     private int activePown = -1;
+    private Attack attacSelected = null;
 
 
     private Pawn[] pawns = new Pawn[6];
@@ -28,13 +32,15 @@ public partial class FightField : Node3D
     Control interfaceee;
     List<BattleFieldBlock> pathSelectetByPlayer = new List<BattleFieldBlock>();
     int temp = 0;
-
+    
 
 
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Camera3D1 = GetNode<Camera3D>("Camera3D1");
+        Camera3D2 = GetNode<Camera3D>("Camera3D2");
         interfaceee = GetNode<Control>("Interface");
         pawnsParent = GetNode<Node3D>("pawns");
 
@@ -47,14 +53,18 @@ public partial class FightField : Node3D
         spawnPawn(7, 3, 4, new Color(1, 0, 0));
         spawnPawn(7, 1, 5, new Color(1, 0, 0));
 
-        for (int i = 0; i < 6; i++)
+       
+        for (int i = 0; i < 3; i++)
         {
             pawns[i].attacks[0] = AttacksRepo.hit;
             pawns[i].attacks[1] = AttacksRepo.acurateHit;
             pawns[i].attacks[2] = AttacksRepo.GretestOfAllHit;
             pawns[i].attacks[3] = AttacksRepo.SuperHIt;
         }
-
+        pawns[3].attacks[0] = AttacksRepo.hit;
+        pawns[4].attacks[1] = AttacksRepo.acurateHit;
+        pawns[5].attacks[2] = AttacksRepo.GretestOfAllHit;
+       
 
 
 
@@ -96,13 +106,17 @@ public partial class FightField : Node3D
         if (eventt is InputEventMouseButton e)
         {
 
-            if (e.ButtonIndex.Equals(MouseButton.Left) && eventt.IsPressed() && isTimeToSelectPawn)
+            if (e.ButtonIndex.Equals(MouseButton.Left) && eventt.IsPressed() && isTimeToSelectPawn && isPlayerTurn)
             {
                 if (activePown >= 0)
                 {
                     pawns[activePown].Call("setNotActive");
+
                 }
+                doPlayerChoosToMove = false;
+                doPlayerChoosToAttac = false;
                 fieldLightOFF();
+                interfaceee.Call("changeVisibilityAttacksButtons", false);
                 setPawnActive(numberPawn);
                 GD.Print("Ustawiony aktywny");
 
@@ -138,6 +152,7 @@ public partial class FightField : Node3D
                             
                             startingBlock.isOcupate = false;
                             startingBlock.pawnOnBlock = -1;
+                            doPlayerChoosToMove = false;
 
                         
 
@@ -168,22 +183,17 @@ public partial class FightField : Node3D
 
                 GD.Print("lewy w block " + row + block);
 
-            }
+           }
             else if (e.ButtonIndex.Equals(MouseButton.Right) && eventt.IsPressed())
             {
-                List<BattleFieldBlock> path = pathFindAStar(pawns[activePown].row, pawns[activePown].block, row, block);
-                if (path.Count <= pawns[activePown].moveRange + 1)
-                {
-                    foreach (BattleFieldBlock blockTofire in path)
-                    {
-                        blockTofire.changeLightColor("RED");
-                    }
-                }
+                changeCamera();
 
             }
             else
             {
                 GD.Print("inne przyciski w block");
+              
+               
             }
 
 
@@ -191,11 +201,10 @@ public partial class FightField : Node3D
 
     }
 
-   
-
+  
     public void buttonAttacksEvents(String buttonName)
     {
-
+        
         GD.Print("Przycisk z atakiem");
         GD.Print(buttonName);
     }
@@ -208,17 +217,34 @@ public partial class FightField : Node3D
         GD.Print(buttonName);
         if (buttonName == "Attack" && activePown >= 0)
         {
+            doPlayerChoosToAttac = true;
+            doPlayerChoosToMove = false;
+
+            clearPathMarks(pathSelectetByPlayer);
+           
+            fieldLightOFF();
+
             SetAttactsToButtons(activePown);
             interfaceee.Call("changeVisibilityAttacksButtons", true);
-            interfaceee.Call("changeVisibilityButtons", false);
+            
+        }else if(buttonName == "Move" && activePown >= 0)
+        {
+            doPlayerChoosToMove = true;
+            doPlayerChoosToAttac = false;
+            interfaceee.Call("changeVisibilityAttacksButtons", false);
+            pathSelectetByPlayer.Clear();
+            pathSelectetByPlayer.Add(battleFieldBlocks[pawns[activePown].row][pawns[activePown].block]);
+            showWhereCanGO(activePown);
         }
 
     }
 
     private void signalBlockMouseEntered(int row, int block)
     {
-        pathPlayerMaker(row, block);
-
+        if (doPlayerChoosToMove)
+        {
+            pathPlayerMaker(row, block);
+        }
     }
 
     private void signalBlockMouseExited(int row, int block)
@@ -247,10 +273,9 @@ public partial class FightField : Node3D
     {
         if (activePown >= 0)
         {
-            for (int i = 0; i < 4; i++)
-            {
+             
                 interfaceee.Call("setAttack", pawns[activePown].attacks);
-            }
+            
 
 
         }
@@ -282,8 +307,8 @@ public partial class FightField : Node3D
         clearPathMarks(pathSelectetByPlayer);
         pathSelectetByPlayer.Clear();
         activePown = pawn;
-        pathSelectetByPlayer.Add(battleFieldBlocks[pawns[pawn].row][pawns[pawn].block]);
-        showWhereCanGO(pawn);
+        
+        
         pawns[pawn].Call("setActive");
        
     }
@@ -744,6 +769,20 @@ public partial class FightField : Node3D
     {
         interfaceee.Call("stopTimer");
     }
+    private void changeCamera() 
+    {
+        if (Camera3D1.Current)
+        {
+            Camera3D2.MakeCurrent();
+
+        }
+        else
+        {
+            Camera3D1.MakeCurrent();
+
+        }
+    }
+
 
 
 
