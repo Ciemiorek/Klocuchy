@@ -36,5 +36,25 @@ public partial class Attack : Node3D
         this.range = range;
         this.attackShape = attackShape;
     }
+
+    public List<Vector2> getRange(int rowStart, int blockStart)
+    {
+        List<Vector2> range = new List<Vector2>();
+
+        range.Add (new Vector2(rowStart + 1, blockStart));
+        range.Add(new Vector2(rowStart + 1, blockStart + 1));
+        range.Add(new Vector2(rowStart + 1, blockStart - 1));
+
+        range.Add(new Vector2(rowStart - 1, blockStart));
+        range.Add(new Vector2(rowStart - 1, blockStart + 1));
+        range.Add(new Vector2(rowStart - 1, blockStart - 1));
+
+       
+        range.Add(new Vector2(rowStart, blockStart + 1));
+        range.Add(new Vector2(rowStart, blockStart - 1));
+
+        return range;
+    }
+
 }
 

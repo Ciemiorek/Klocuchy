@@ -76,7 +76,12 @@ public partial class BattleFieldBlock : Node3D
 		else if (color == "GREEN")
 		{
 			materialLight.AlbedoColor = new Color(0, 1, 0.3f, 0.6f);
+		}else if(color == "ORANGE")
+        {
+			materialLight.AlbedoColor = new Color(1, 1, 0.3f, 0.3f);
 		}
+
+
 	}
 	public void ligtOff()
 	{

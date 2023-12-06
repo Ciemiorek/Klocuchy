@@ -30,8 +30,11 @@ public partial class FightField : Node3D
 
     Node3D pawnsParent;
     Control interfaceee;
+    Control testInterface;
+    AttacksRepo AttacksRepo = new AttacksRepo();
     List<BattleFieldBlock> pathSelectetByPlayer = new List<BattleFieldBlock>();
-    int temp = 0;
+    List<BattleFieldBlock> areaWhereCanPerformAttac = new List<BattleFieldBlock>();
+    
     
 
 
@@ -43,7 +46,8 @@ public partial class FightField : Node3D
         Camera3D2 = GetNode<Camera3D>("Camera3D2");
         interfaceee = GetNode<Control>("Interface");
         pawnsParent = GetNode<Node3D>("pawns");
-
+        testInterface = GetNode<Control>("Control");
+       
         initializationOfFieldBlockMatrix();
 
         spawnPawn(0, 0, 0, new Color(1, 0, 0));
@@ -64,8 +68,8 @@ public partial class FightField : Node3D
         pawns[3].attacks[0] = AttacksRepo.hit;
         pawns[4].attacks[1] = AttacksRepo.acurateHit;
         pawns[5].attacks[2] = AttacksRepo.GretestOfAllHit;
-       
 
+        
 
 
         interfaceee.Call("setName", "00", 0);
@@ -91,13 +95,42 @@ public partial class FightField : Node3D
         deltaPassed += delta;
 
         this.delta = delta;
+        testInterface.Call("addText", "doPlayerChoosToMove  " + doPlayerChoosToMove, 0);
+        testInterface.Call("addText", "doPlayerChoosToAttac  " + doPlayerChoosToAttac, 1);
+        testInterface.Call("addText", "doPlayerChoosWitchAttack  " + doPlayerChoosWitchAttack, 2);
+        testInterface.Call("addText", "isPlayerTurn  " + isPlayerTurn, 3);
+        testInterface.Call("addText", "isTimeToSelectPawn  " + isTimeToSelectPawn, 4);
+        testInterface.Call("addText", "activePown  " + activePown, 5);
+        testInterface.Call("addText", "attacSelected  " + attacSelected, 6);
+        
+            
+          
 
+
+}
+
+    public override void _Input(InputEvent @event)
+    {
+
+        if (@event is InputEventKey inputEventKey)
+        {
+            var keycode = DisplayServer.KeyboardGetKeycodeFromPhysical(inputEventKey.PhysicalKeycode);
+            if (keycode.Equals(Key.F1) && @event.IsPressed())
+            {
+                if (testInterface.Visible == true)
+                {
+                    testInterface.Visible = false;
+                }
+                else
+                {
+                    testInterface.Visible = true;
+                }
+
+
+            }
        
-
-
+        }
     }
-
-   
 
     //!!!!!!!!!!!!!!!EVENTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -204,7 +237,14 @@ public partial class FightField : Node3D
   
     public void buttonAttacksEvents(String buttonName)
     {
-        
+        Pawn aPawn = pawns[activePown];
+        Attack a = AttacksRepo.getAttackByName(buttonName);
+        areaWhereCanPerformAttac =  convertVecotorListToBattleBlockList(a.getRange(aPawn.row, aPawn.block));
+        doPlayerChoosWitchAttack = true;
+        foreach(BattleFieldBlock b in areaWhereCanPerformAttac)
+        {
+            b.changeLightColor("ORANGE");
+        }
         GD.Print("Przycisk z atakiem");
         GD.Print(buttonName);
     }
@@ -244,6 +284,18 @@ public partial class FightField : Node3D
         if (doPlayerChoosToMove)
         {
             pathPlayerMaker(row, block);
+        }
+        else if (doPlayerChoosToAttac && doPlayerChoosWitchAttack){
+            fieldLightOFF();
+            foreach (BattleFieldBlock b in areaWhereCanPerformAttac)
+            {
+                b.changeLightColor("ORANGE");
+            }
+            BattleFieldBlock blockToCheck = battleFieldBlocks[row][block];
+            if (areaWhereCanPerformAttac.Contains(blockToCheck))
+            {
+                blockToCheck.changeLightColor("RED");
+            }
         }
     }
 
@@ -384,6 +436,22 @@ public partial class FightField : Node3D
 
     }
 
+    private List<BattleFieldBlock> convertVecotorListToBattleBlockList(List<Vector2> listVectors) {
+
+        List<BattleFieldBlock> covertedList = new List<BattleFieldBlock>();
+
+        foreach (Vector2 v in listVectors)
+        {
+            if(v.X>=0 && v.Y>=0 &&v.X<8 && v.Y < 6)
+            {
+                int x = (int)v.X;
+                int y = (int)v.Y;
+                covertedList.Add(battleFieldBlocks[x][y]);
+            }
+
+            }
+        return covertedList;
+    }
 
 
     private List<BattleFieldBlock> pathFindAStar(int curentpositionRow, int curentpositionBlock, int rowGo, int blockGo)

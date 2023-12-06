@@ -24,5 +24,13 @@ using System.Threading.Tasks;
 
     }
 
+public enum MyColors
+{
+    Dot,
+    LineH,
+    LineV,
+    Squear,
+
+}
 
 
